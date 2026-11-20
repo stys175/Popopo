@@ -1,0 +1,1606 @@
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Первый шаг">
+    <title>Первый шаг — Польский CEFR, Тренировки и Финансы</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        :root {
+            --bg-main: #09090b;
+            --bg-card: #121216;
+            --bg-elevated: #1c1c22;
+            --border-color: #27272f;
+            --accent: #a855f7;
+            --accent-hover: #9333ea;
+            --accent-soft: rgba(168, 85, 247, 0.15);
+            --text-main: #f4f4f5;
+            --text-muted: #a1a1aa;
+        }
+        [data-theme="emerald"] {
+            --accent: #10b981;
+            --accent-hover: #059669;
+            --accent-soft: rgba(16, 185, 129, 0.15);
+        }
+        [data-theme="crimson"] {
+            --accent: #f43f5e;
+            --accent-hover: #e11d48;
+            --accent-soft: rgba(244, 63, 94, 0.15);
+        }
+        [data-theme="cyan"] {
+            --accent: #06b6d4;
+            --accent-hover: #0891b2;
+            --accent-soft: rgba(6, 182, 212, 0.15);
+        }
+        [data-theme="amber"] {
+            --accent: #f59e0b;
+            --accent-hover: #d97706;
+            --accent-soft: rgba(245, 158, 11, 0.15);
+        }
+        body {
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+            padding-bottom: 84px;
+        }
+        .card {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+        }
+        .elevated {
+            background-color: var(--bg-elevated);
+            border: 1px solid var(--border-color);
+        }
+        .btn-accent {
+            background-color: var(--accent);
+            color: #fff;
+            transition: all 0.15s ease;
+        }
+        .btn-accent:active {
+            transform: scale(0.97);
+            background-color: var(--accent-hover);
+        }
+        .text-accent {
+            color: var(--accent);
+        }
+        .bg-accent-soft {
+            background-color: var(--accent-soft);
+        }
+        .border-accent {
+            border-color: var(--accent);
+        }
+        .muscle-path {
+            fill: #27272a;
+            stroke: #3f3f46;
+            stroke-width: 1.5;
+            cursor: pointer;
+            transition: fill 0.2s, stroke 0.2s;
+        }
+        .muscle-path:hover {
+            fill: #3f3f46;
+        }
+        .muscle-path.active {
+            fill: var(--accent);
+            stroke: #fff;
+        }
+        ::-webkit-scrollbar {
+            width: 4px;
+            height: 4px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #27272f;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="antialiased selection:bg-purple-500 selection:text-white">
+
+    <!-- Header -->
+    <header class="sticky top-0 z-30 backdrop-blur-md bg-black/80 border-b border-zinc-800 px-4 py-3 flex items-center justify-between">
+        <div class="flex items-center gap-2.5">
+            <div class="w-8 h-8 rounded-xl btn-accent flex items-center justify-center font-bold text-lg shadow-lg">1</div>
+            <div>
+                <h1 class="font-bold text-base leading-tight tracking-tight">Первый шаг</h1>
+                <p class="text-[11px] text-zinc-400" id="headerSubtitle">Польский CEFR • Зал • Работа • Бюджет</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-2">
+            <button onclick="openBackupModal()" class="px-2.5 py-1.5 rounded-lg elevated text-xs font-medium text-zinc-300 hover:text-white flex items-center gap-1">
+                <span>💾</span> Бекап
+            </button>
+            <select id="themeSelector" onchange="changeTheme(this.value)" class="px-2 py-1.5 rounded-lg elevated text-xs text-zinc-300 outline-none">
+                <option value="purple">Фиолетовый</option>
+                <option value="emerald">Изумруд</option>
+                <option value="crimson">Кримсон</option>
+                <option value="cyan">Неон</option>
+                <option value="amber">Янтарь</option>
+            </select>
+        </div>
+    </header>
+
+    <!-- Main Content Container -->
+    <main class="max-w-2xl mx-auto px-4 pt-4 space-y-4">
+
+        <!-- ==================== TAB 1: POLISH LANGUAGE (PRIORITY #1) ==================== -->
+        <section id="tab-polish" class="space-y-4">
+            <!-- Daily Progress Banner -->
+            <div class="card p-4 bg-gradient-to-br from-zinc-900 to-zinc-950">
+                <div class="flex justify-between items-start mb-3">
+                    <div>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-accent">Приоритет №1 • Языковой тренажёр</span>
+                        <h2 class="text-lg font-bold mt-0.5">Польский язык (A1 — C1)</h2>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-xs text-zinc-400">Выучено всего</div>
+                        <div class="text-lg font-bold text-accent" id="plTotalLearned">0 слов</div>
+                    </div>
+                </div>
+                
+                <!-- Level Selector -->
+                <div class="grid grid-cols-5 gap-1.5 mb-3" id="plLevelButtons">
+                    <button onclick="setPlLevel('A1')" data-lvl="A1" class="pl-lvl-btn py-2 rounded-xl text-xs font-bold border border-zinc-700">A1</button>
+                    <button onclick="setPlLevel('A2')" data-lvl="A2" class="pl-lvl-btn py-2 rounded-xl text-xs font-bold border border-zinc-700">A2</button>
+                    <button onclick="setPlLevel('B1')" data-lvl="B1" class="pl-lvl-btn py-2 rounded-xl text-xs font-bold border border-zinc-700">B1</button>
+                    <button onclick="setPlLevel('B2')" data-lvl="B2" class="pl-lvl-btn py-2 rounded-xl text-xs font-bold border border-zinc-700">B2</button>
+                    <button onclick="setPlLevel('C1')" data-lvl="C1" class="pl-lvl-btn py-2 rounded-xl text-xs font-bold border border-zinc-700">C1</button>
+                </div>
+
+                <!-- Level Progress Bar -->
+                <div class="space-y-1">
+                    <div class="flex justify-between text-xs text-zinc-400">
+                        <span id="plLevelDesc">Уровень A1: Базовый (100 слов + фразы)</span>
+                        <span id="plLevelProgressText">0%</span>
+                    </div>
+                    <div class="w-full h-2 bg-zinc-800 rounded-full overflow-hidden">
+                        <div id="plLevelProgressBar" class="h-full btn-accent transition-all duration-300" style="width: 0%"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sub-navigation inside Polish -->
+            <div class="grid grid-cols-4 gap-1.5 bg-zinc-900 p-1 rounded-xl border border-zinc-800">
+                <button onclick="setPlSubtab('daily')" id="pl-sub-daily" class="py-2 rounded-lg text-xs font-semibold btn-accent">Сегодня</button>
+                <button onclick="setPlSubtab('words')" id="pl-sub-words" class="py-2 rounded-lg text-xs font-semibold text-zinc-400">Словарь</button>
+                <button onclick="setPlSubtab('phrases')" id="pl-sub-phrases" class="py-2 rounded-lg text-xs font-semibold text-zinc-400">Фразы</button>
+                <button onclick="setPlSubtab('quiz')" id="pl-sub-quiz" class="py-2 rounded-lg text-xs font-semibold text-zinc-400">Тест / SRS</button>
+            </div>
+
+            <!-- Subtab: Daily Goal (10 words + 5 phrases + SRS review) -->
+            <div id="pl-view-daily" class="space-y-3">
+                <div class="card p-3.5 flex items-center justify-between">
+                    <div>
+                        <h3 class="font-bold text-sm">Дневная норма: 10 слов + 5 фраз</h3>
+                        <p class="text-xs text-zinc-400">Нажимай 🔊 для озвучки, отмечай выученное</p>
+                    </div>
+                    <button onclick="refreshDailyPack()" class="px-3 py-1.5 rounded-lg elevated text-xs font-semibold text-accent">Новый набор</button>
+                </div>
+
+                <div id="plSrsAlert" class="hidden card p-3 border-amber-500/40 bg-amber-500/10 flex items-center justify-between">
+                    <div class="text-xs">
+                        <span class="font-bold text-amber-400">На повторении (SRS):</span>
+                        <span id="plSrsCount" class="text-zinc-200">0 слов требуют повторения</span>
+                    </div>
+                    <button onclick="setPlSubtab('quiz')" class="px-2.5 py-1 rounded-lg bg-amber-500 text-black font-bold text-xs">Повторить</button>
+                </div>
+
+                <div class="space-y-2">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-400 px-1">10 слов на сегодня</h4>
+                    <div id="plDailyWordsList" class="space-y-2"></div>
+                </div>
+
+                <div class="space-y-2 pt-2">
+                    <h4 class="text-xs font-bold uppercase tracking-wider text-zinc-400 px-1">5 фраз с изученными словами</h4>
+                    <div id="plDailyPhrasesList" class="space-y-2"></div>
+                </div>
+            </div>
+
+            <!-- Subtab: Full Dictionary Browser -->
+            <div id="pl-view-words" class="hidden space-y-3">
+                <div class="flex gap-2">
+                    <input type="text" id="plWordSearch" oninput="renderPlDictionary()" placeholder="Поиск по польскому или переводу..." class="w-full px-3.5 py-2.5 rounded-xl elevated text-sm outline-none focus:border-accent">
+                    <select id="plWordFilter" onchange="renderPlDictionary()" class="px-3 py-2.5 rounded-xl elevated text-xs outline-none">
+                        <option value="all">Все</option>
+                        <option value="unlearned">Новые</option>
+                        <option value="learned">Выучено</option>
+                        <option value="srs">Сложные (SRS)</option>
+                    </select>
+                </div>
+                <div id="plDictionaryList" class="space-y-2 max-h-[60vh] overflow-y-auto pr-1"></div>
+            </div>
+
+            <!-- Subtab: Phrases Browser -->
+            <div id="pl-view-phrases" class="hidden space-y-3">
+                <input type="text" id="plPhraseSearch" oninput="renderPlPhrases()" placeholder="Поиск фраз..." class="w-full px-3.5 py-2.5 rounded-xl elevated text-sm outline-none focus:border-accent">
+                <div id="plPhrasesList" class="space-y-2 max-h-[60vh] overflow-y-auto pr-1"></div>
+            </div>
+
+            <!-- Subtab: Interactive Quiz & SRS -->
+            <div id="pl-view-quiz" class="hidden space-y-4">
+                <div class="card p-5 text-center space-y-4" id="quizContainer">
+                    <div class="flex justify-between text-xs text-zinc-400">
+                        <span id="quizModeLabel">Режим: Проверка знаний</span>
+                        <span>Серия: <strong id="quizStreak" class="text-accent">0</strong></span>
+                    </div>
+                    <div class="py-4">
+                        <div class="text-xs text-zinc-400 mb-1">Как переводится слово:</div>
+                        <div class="text-2xl font-extrabold tracking-tight" id="quizQuestionWord">...</div>
+                        <button onclick="speakText(currentQuizItem?.pl || '')" class="mt-2 px-3 py-1 rounded-full bg-accent-soft text-accent text-xs font-semibold">🔊 Произнести</button>
+                    </div>
+                    <div id="quizOptions" class="grid grid-cols-1 gap-2 text-left"></div>
+                    <div id="quizFeedback" class="text-xs font-semibold min-h-[20px]"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 2: GYM & ANATOMY (PRIORITY #2) ==================== -->
+        <section id="tab-gym" class="hidden space-y-4">
+            <div class="card p-4">
+                <div class="flex justify-between items-center mb-3">
+                    <div>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-accent">Приоритет №2 • Силовой тренинг</span>
+                        <h2 class="text-lg font-bold">Атлас мышц и прогресс</h2>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-xs text-zinc-400">Выполнение</div>
+                        <div class="text-lg font-bold text-accent" id="gymCompletionPct">0%</div>
+                    </div>
+                </div>
+
+                <!-- View Switcher: Front / Back -->
+                <div class="grid grid-cols-2 gap-2 mb-3">
+                    <button onclick="setBodyView('front')" id="btnBodyFront" class="py-2 rounded-xl text-xs font-bold btn-accent">Вид спереди</button>
+                    <button onclick="setBodyView('back')" id="btnBodyBack" class="py-2 rounded-xl text-xs font-bold elevated text-zinc-400">Вид сзади (Спина)</button>
+                </div>
+
+                <!-- Interactive SVG Anatomy -->
+                <div class="flex flex-col sm:flex-row items-center gap-4 bg-zinc-950/70 p-3 rounded-xl border border-zinc-800">
+                    <div class="w-44 h-64 flex-shrink-0 flex items-center justify-center">
+                        <!-- FRONT SVG -->
+                        <svg id="svgBodyFront" viewBox="0 0 200 320" class="w-full h-full">
+                            <!-- Head & Neck -->
+                            <circle cx="100" cy="28" r="18" fill="#27272a" />
+                            <rect x="92" y="45" width="16" height="14" fill="#27272a" />
+                            <!-- Shoulders (Front/Side Delts) -->
+                            <path d="M62,62 Q48,68 46,88 L60,92 L68,68 Z" class="muscle-path" data-muscle="shoulders" onclick="toggleMuscle('shoulders')" />
+                            <path d="M138,62 Q152,68 154,88 L140,92 L132,68 Z" class="muscle-path" data-muscle="shoulders" onclick="toggleMuscle('shoulders')" />
+                            <!-- Chest -->
+                            <path d="M68,64 L98,64 L98,96 L65,92 Z" class="muscle-path" data-muscle="chest" onclick="toggleMuscle('chest')" />
+                            <path d="M132,64 L102,64 L102,96 L135,92 Z" class="muscle-path" data-muscle="chest" onclick="toggleMuscle('chest')" />
+                            <!-- Biceps -->
+                            <path d="M46,90 L59,93 L55,126 L41,122 Z" class="muscle-path" data-muscle="biceps" onclick="toggleMuscle('biceps')" />
+                            <path d="M154,90 L141,93 L145,126 L159,122 Z" class="muscle-path" data-muscle="biceps" onclick="toggleMuscle('biceps')" />
+                            <!-- Forearms -->
+                            <path d="M41,125 L54,128 L48,165 L35,160 Z" class="muscle-path" data-muscle="forearms" onclick="toggleMuscle('forearms')" />
+                            <path d="M159,125 L146,128 L152,165 L165,160 Z" class="muscle-path" data-muscle="forearms" onclick="toggleMuscle('forearms')" />
+                            <!-- Abs -->
+                            <rect x="76" y="99" width="48" height="58" rx="6" class="muscle-path" data-muscle="abs" onclick="toggleMuscle('abs')" />
+                            <!-- Quads -->
+                            <path d="M68,162 L97,162 L94,232 L66,228 Z" class="muscle-path" data-muscle="quads" onclick="toggleMuscle('quads')" />
+                            <path d="M132,162 L103,162 L106,232 L134,228 Z" class="muscle-path" data-muscle="quads" onclick="toggleMuscle('quads')" />
+                            <!-- Calves Front -->
+                            <path d="M68,238 L92,238 L88,295 L72,295 Z" class="muscle-path" data-muscle="calves" onclick="toggleMuscle('calves')" />
+                            <path d="M132,238 L108,238 L112,295 L128,295 Z" class="muscle-path" data-muscle="calves" onclick="toggleMuscle('calves')" />
+                        </svg>
+
+                        <!-- BACK SVG -->
+                        <svg id="svgBodyBack" viewBox="0 0 200 320" class="w-full h-full hidden">
+                            <!-- Head -->
+                            <circle cx="100" cy="28" r="18" fill="#27272a" />
+                            <!-- Traps -->
+                            <path d="M84,48 L116,48 L130,66 L100,82 L70,66 Z" class="muscle-path" data-muscle="traps" onclick="toggleMuscle('traps')" />
+                            <!-- Rear Delts -->
+                            <path d="M62,62 Q48,68 46,88 L62,90 L69,68 Z" class="muscle-path" data-muscle="shoulders" onclick="toggleMuscle('shoulders')" />
+                            <path d="M138,62 Q152,68 154,88 L138,90 L131,68 Z" class="muscle-path" data-muscle="shoulders" onclick="toggleMuscle('shoulders')" />
+                            <!-- Lats / Back -->
+                            <path d="M68,70 L100,84 L132,70 L124,132 L100,140 L76,132 Z" class="muscle-path" data-muscle="back" onclick="toggleMuscle('back')" />
+                            <!-- Triceps -->
+                            <path d="M46,90 L60,92 L56,126 L41,122 Z" class="muscle-path" data-muscle="triceps" onclick="toggleMuscle('triceps')" />
+                            <path d="M154,90 L140,92 L144,126 L159,122 Z" class="muscle-path" data-muscle="triceps" onclick="toggleMuscle('triceps')" />
+                            <!-- Lower Back -->
+                            <rect x="82" y="135" width="36" height="24" rx="4" class="muscle-path" data-muscle="back" onclick="toggleMuscle('back')" />
+                            <!-- Glutes -->
+                            <path d="M68,160 L132,160 L134,192 L66,192 Z" class="muscle-path" data-muscle="glutes" onclick="toggleMuscle('glutes')" />
+                            <!-- Hamstrings -->
+                            <path d="M68,195 L97,195 L94,238 L68,235 Z" class="muscle-path" data-muscle="hamstrings" onclick="toggleMuscle('hamstrings')" />
+                            <path d="M132,195 L103,195 L106,238 L132,235 Z" class="muscle-path" data-muscle="hamstrings" onclick="toggleMuscle('hamstrings')" />
+                            <!-- Calves -->
+                            <path d="M69,242 L93,242 L89,296 L73,296 Z" class="muscle-path" data-muscle="calves" onclick="toggleMuscle('calves')" />
+                            <path d="M131,242 L107,242 L111,296 L127,296 Z" class="muscle-path" data-muscle="calves" onclick="toggleMuscle('calves')" />
+                        </svg>
+                    </div>
+
+                    <!-- Muscle Chips Selection -->
+                    <div class="flex-1 space-y-2 w-full">
+                        <div class="text-xs text-zinc-400">Выбери группы мышц на сегодня:</div>
+                        <div class="flex flex-wrap gap-1.5" id="muscleChipsContainer"></div>
+                        <div class="pt-2 border-t border-zinc-800 flex justify-between items-center text-xs">
+                            <span class="text-zinc-400">Тоннаж: <strong id="gymTotalTonnage" class="text-white">0 кг</strong></span>
+                            <button onclick="saveWorkoutToCalendar()" class="px-3 py-1.5 rounded-lg btn-accent font-bold">Завершить и в календарь</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Selected Muscles -> 3 of 5 Exercise Selector & Logger -->
+            <div id="gymExercisesArea" class="space-y-4"></div>
+        </section>
+
+        <!-- ==================== TAB 3: WORK & CALENDAR (PRIORITY #3) ==================== -->
+        <section id="tab-work" class="hidden space-y-4">
+            <!-- 3 Hourly Income Streams -->
+            <div class="card p-4 space-y-3">
+                <div class="flex justify-between items-center">
+                    <div>
+                        <span class="text-xs font-semibold uppercase tracking-wider text-accent">Приоритет №3 • График и ставки</span>
+                        <h2 class="text-lg font-bold">3 почасовых дохода</h2>
+                    </div>
+                    <div class="text-right">
+                        <div class="text-xs text-zinc-400">Заработано за месяц</div>
+                        <div class="text-lg font-bold text-emerald-400" id="workMonthTotalPln">0 zł</div>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5" id="incomeStreamsContainer"></div>
+            </div>
+
+            <!-- Interactive Calendar synced with Work Shifts & Workouts -->
+            <div class="card p-4 space-y-3">
+                <div class="flex items-center justify-between">
+                    <button onclick="changeCalMonth(-1)" class="p-2 rounded-lg elevated text-xs font-bold">◀</button>
+                    <h3 class="font-bold text-base capitalize" id="calMonthTitle">Ноябрь 2026</h3>
+                    <button onclick="changeCalMonth(1)" class="p-2 rounded-lg elevated text-xs font-bold">▶</button>
+                </div>
+
+                <!-- Legend -->
+                <div class="flex flex-wrap gap-3 text-[11px] text-zinc-400 justify-center">
+                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Утро</span>
+                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-rose-500"></span> Вечер</span>
+                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-indigo-500"></span> Доп. смена</span>
+                    <span class="flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span> Зал</span>
+                </div>
+
+                <!-- Days of week -->
+                <div class="grid grid-cols-7 text-center text-[11px] font-semibold text-zinc-500">
+                    <div>Пн</div><div>Вт</div><div>Ср</div><div>Чт</div><div>Пт</div><div>Сб</div><div>Вс</div>
+                </div>
+
+                <!-- Calendar Grid -->
+                <div id="calendarGrid" class="grid grid-cols-7 gap-1.5"></div>
+            </div>
+        </section>
+
+        <!-- ==================== TAB 4: EXPENSES & SAVINGS (PRIORITY #4) ==================== -->
+        <section id="tab-finance" class="hidden space-y-4">
+            <!-- Summary Balance Card -->
+            <div class="card p-4 space-y-3">
+                <span class="text-xs font-semibold uppercase tracking-wider text-accent">Приоритет №4 • Бюджет и цели</span>
+                <div class="grid grid-cols-3 gap-2 text-center">
+                    <div class="elevated p-2.5 rounded-xl">
+                        <div class="text-[11px] text-zinc-400">Доход (мес)</div>
+                        <div class="font-bold text-sm text-emerald-400 mt-0.5" id="finIncomeDisplay">0 zł</div>
+                    </div>
+                    <div class="elevated p-2.5 rounded-xl">
+                        <div class="text-[11px] text-zinc-400">Расходы</div>
+                        <div class="font-bold text-sm text-rose-400 mt-0.5" id="finExpenseDisplay">0 zł</div>
+                    </div>
+                    <div class="elevated p-2.5 rounded-xl">
+                        <div class="text-[11px] text-zinc-400">Остаток</div>
+                        <div class="font-bold text-sm text-white mt-0.5" id="finBalanceDisplay">0 zł</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Add Expense Form -->
+            <div class="card p-4 space-y-3">
+                <h3 class="font-bold text-sm">Добавить расход</h3>
+                <div class="grid grid-cols-2 gap-2">
+                    <input type="text" id="expTitle" placeholder="На что (напр. Biedronka)" class="px-3 py-2 rounded-xl elevated text-xs outline-none">
+                    <input type="number" id="expAmount" placeholder="Сумма (zł)" class="px-3 py-2 rounded-xl elevated text-xs outline-none">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <select id="expCategory" class="px-3 py-2 rounded-xl elevated text-xs outline-none">
+                        <option value="Еда и продукты">🛒 Еда и продукты</option>
+                        <option value="Жильё и счета">🏠 Жильё и счета</option>
+                        <option value="Спорт и здоровье">💪 Спорт и здоровье</option>
+                        <option value="Транспорт">🚌 Транспорт</option>
+                        <option value="Личное и другое">📦 Личное и другое</option>
+                    </select>
+                    <button onclick="addExpense()" class="btn-accent rounded-xl text-xs font-bold py-2">Записать расход</button>
+                </div>
+                <div id="expensesList" class="space-y-1.5 max-h-48 overflow-y-auto pt-1"></div>
+            </div>
+
+            <!-- Savings & Wishlist Goals -->
+            <div class="card p-4 space-y-3">
+                <div class="flex justify-between items-center">
+                    <h3 class="font-bold text-sm">Накопления и будущие траты</h3>
+                    <button onclick="openGoalModal()" class="px-2.5 py-1 rounded-lg btn-accent text-xs font-bold">+ Цель</button>
+                </div>
+                <div id="savingsGoalsList" class="space-y-2.5"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Bottom Navigation (4 Focused Priority Tabs) -->
+    <nav class="fixed bottom-0 inset-x-0 z-40 bg-zinc-950/95 backdrop-blur-md border-t border-zinc-800 px-2 py-2">
+        <div class="max-w-2xl mx-auto grid grid-cols-4 gap-1">
+            <button onclick="switchTab('polish')" id="nav-polish" class="nav-btn flex flex-col items-center py-1.5 rounded-xl text-accent bg-accent-soft">
+                <span class="text-lg">🇵🇱</span>
+                <span class="text-[10px] font-bold mt-0.5">Польский</span>
+            </button>
+            <button onclick="switchTab('gym')" id="nav-gym" class="nav-btn flex flex-col items-center py-1.5 rounded-xl text-zinc-400">
+                <span class="text-lg">💪</span>
+                <span class="text-[10px] font-semibold mt-0.5">Тренировки</span>
+            </button>
+            <button onclick="switchTab('work')" id="nav-work" class="nav-btn flex flex-col items-center py-1.5 rounded-xl text-zinc-400">
+                <span class="text-lg">📅</span>
+                <span class="text-[10px] font-semibold mt-0.5">Работа</span>
+            </button>
+            <button onclick="switchTab('finance')" id="nav-finance" class="nav-btn flex flex-col items-center py-1.5 rounded-xl text-zinc-400">
+                <span class="text-lg">💰</span>
+                <span class="text-[10px] font-semibold mt-0.5">Расходы</span>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Day Shift & Event Modal -->
+    <div id="dayModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-end sm:items-center justify-center p-4">
+        <div class="card w-full max-w-md p-4 space-y-3">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-base" id="dayModalTitle">Дата</h3>
+                <button onclick="closeModal('dayModal')" class="text-zinc-400 hover:text-white text-lg">✕</button>
+            </div>
+            <div id="dayEventsList" class="space-y-1.5 max-h-40 overflow-y-auto"></div>
+            <div class="border-t border-zinc-800 pt-3 space-y-2">
+                <div class="text-xs font-semibold text-zinc-400">Добавить рабочую смену (авто-расчёт):</div>
+                <select id="shiftStreamSelect" class="w-full px-3 py-2 rounded-xl elevated text-xs outline-none"></select>
+                <div class="grid grid-cols-2 gap-2">
+                    <select id="shiftTypeSelect" class="px-3 py-2 rounded-xl elevated text-xs outline-none">
+                        <option value="morning">🟢 Утро (Зелёный)</option>
+                        <option value="evening">🔴 Вечер (Красный)</option>
+                        <option value="extra">🟣 Доп. смена</option>
+                    </select>
+                    <input type="number" id="shiftHoursInput" step="0.5" value="6.5" placeholder="Часов" class="px-3 py-2 rounded-xl elevated text-xs outline-none">
+                </div>
+                <button onclick="addWorkShift()" class="w-full py-2.5 rounded-xl btn-accent text-xs font-bold">Сохранить смену в календарь</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add Savings Goal Modal -->
+    <div id="goalModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="card w-full max-w-md p-4 space-y-3">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-base">Новая цель накопления</h3>
+                <button onclick="closeModal('goalModal')" class="text-zinc-400 hover:text-white">✕</button>
+            </div>
+            <input type="text" id="goalTitleInput" placeholder="Название (напр. Поездка, ноутбук)" class="w-full px-3 py-2 rounded-xl elevated text-xs outline-none">
+            <div class="grid grid-cols-2 gap-2">
+                <input type="number" id="goalTargetInput" placeholder="Нужно (zł)" class="px-3 py-2 rounded-xl elevated text-xs outline-none">
+                <input type="number" id="goalSavedInput" placeholder="Уже есть (zł)" value="0" class="px-3 py-2 rounded-xl elevated text-xs outline-none">
+            </div>
+            <button onclick="addSavingsGoal()" class="w-full py-2.5 rounded-xl btn-accent text-xs font-bold">Создать цель</button>
+        </div>
+    </div>
+
+    <!-- Backup Modal -->
+    <div id="backupModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="card w-full max-w-md p-4 space-y-3">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-base">Резервная копия данных (JSON)</h3>
+                <button onclick="closeModal('backupModal')" class="text-zinc-400 hover:text-white">✕</button>
+            </div>
+            <p class="text-xs text-zinc-400">Сохраняй копию перед обновлением файла или переносом на другое устройство.</p>
+            <div class="grid grid-cols-2 gap-2">
+                <button onclick="exportDataJson()" class="py-2 rounded-xl btn-accent text-xs font-bold">Скачать JSON</button>
+                <label class="py-2 rounded-xl elevated text-xs font-bold text-center cursor-pointer">
+                    Загрузить JSON
+                    <input type="file" accept=".json" onchange="importDataJson(event)" class="hidden">
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ==================== POLISH CEFR DATABASE (A1 - C1) ====================
+        const POLISH_DATA = {
+            A1: {
+                desc: "Уровень A1: Базовый (Выживание и быт)",
+                words: [
+                    { pl: "Cześć", tr: "Чещчь", ru: "Привет / Пока" },
+                    { pl: "Dzień dobry", tr: "Дзень добры", ru: "Добрый день" },
+                    { pl: "Dziękuję", tr: "Дзенькуе", ru: "Спасибо" },
+                    { pl: "Proszę", tr: "Прошэ", ru: "Пожалуйста / Прошу" },
+                    { pl: "Przepraszam", tr: "Пшэпрашам", ru: "Извините" },
+                    { pl: "Tak", tr: "Так", ru: "Да" },
+                    { pl: "Nie", tr: "Не", ru: "Нет" },
+                    { pl: "Woda", tr: "Вода", ru: "Вода" },
+                    { pl: "Chleb", tr: "Хлеб", ru: "Хлеб" },
+                    { pl: "Kawa", tr: "Кава", ru: "Кофе" },
+                    { pl: "Herbata", tr: "Хэрбата", ru: "Чай" },
+                    { pl: "Mleko", tr: "Млеко", ru: "Молоко" },
+                    { pl: "Mięso", tr: "Менсо", ru: "Мясо" },
+                    { pl: "Kurczak", tr: "Курчак", ru: "Курица" },
+                    { pl: "Jajko", tr: "Яйко", ru: "Яйцо" },
+                    { pl: "Ser", tr: "Сэр", ru: "Сыр / Творог" },
+                    { pl: "Jabłko", tr: "Яблко", ru: "Яблоко" },
+                    { pl: "Banan", tr: "Банан", ru: "Банан" },
+                    { pl: "Dom", tr: "Дом", ru: "Дом" },
+                    { pl: "Mieszkanie", tr: "Мешкане", ru: "Квартира" },
+                    { pl: "Pokój", tr: "Покуй", ru: "Комната" },
+                    { pl: "Sklep", tr: "Склеп", ru: "Магазин" },
+                    { pl: "Praca", tr: "Праца", ru: "Работа" },
+                    { pl: "Czas", tr: "Час", ru: "Время" },
+                    { pl: "Dzisiaj", tr: "Дзищяй", ru: "Сегодня" },
+                    { pl: "Jutro", tr: "Ютро", ru: "Завтра" },
+                    { pl: "Wczoraj", tr: "Вчорай", ru: "Вчера" },
+                    { pl: "Rano", tr: "Рано", ru: "Утром" },
+                    { pl: "Wieczór", tr: "Вечур", ru: "Вечер" },
+                    { pl: "Noc", tr: "Ноц", ru: "Ночь" },
+                    { pl: "Pieniądze", tr: "Пенёндзэ", ru: "Деньги" },
+                    { pl: "Karta", tr: "Карта", ru: "Карта" },
+                    { pl: "Gotówka", tr: "Готувка", ru: "Наличные" },
+                    { pl: "Cena", tr: "Цэна", ru: "Цена" },
+                    { pl: "Tanio", tr: "Танё", ru: "Дёшево" },
+                    { pl: "Drogo", tr: "Дрого", ru: "Дорого" },
+                    { pl: "Duży", tr: "Дужы", ru: "Большой" },
+                    { pl: "Mały", tr: "Малы", ru: "Маленький" },
+                    { pl: "Dobry", tr: "Добры", ru: "Хороший" },
+                    { pl: "Zły", tr: "Злы", ru: "Плохой" },
+                    { pl: "Nowy", tr: "Новы", ru: "Новый" },
+                    { pl: "Stary", tr: "Стары", ru: "Старый" },
+                    { pl: "Ciepły", tr: "Чеплы", ru: "Тёплый" },
+                    { pl: "Zimny", tr: "Зимны", ru: "Холодный" },
+                    { pl: "Iść", tr: "Ищчь", ru: "Идти" },
+                    { pl: "Jechać", tr: "Ехачь", ru: "Ехать" },
+                    { pl: "Jeść", tr: "Ещчь", ru: "Есть (кушать)" },
+                    { pl: "Pić", tr: "Пичь", ru: "Пить" },
+                    { pl: "Spać", tr: "Спачь", ru: "Спать" },
+                    { pl: "Pracować", tr: "Працовачь", ru: "Работать" },
+                    { pl: "Mówić", tr: "Мувичь", ru: "Говорить" },
+                    { pl: "Rozumieć", tr: "Розумечь", ru: "Понимать" },
+                    { pl: "Wiedzieć", tr: "Ведзечь", ru: "Знать" },
+                    { pl: "Chcieć", tr: "Хчечь", ru: "Хотеть" },
+                    { pl: "Móc", tr: "Муц", ru: "Мочь" },
+                    { pl: "Kupić", tr: "Купичь", ru: "Купить" },
+                    { pl: "Płacić", tr: "Плачичь", ru: "Платить" },
+                    { pl: "Pomoc", tr: "Помоц", ru: "Помощь" },
+                    { pl: "Imię", tr: "Име", ru: "Имя" },
+                    { pl: "Nazwisko", tr: "Назвиско", ru: "Фамилия" }
+                ],
+                phrases: [
+                    { pl: "Dzień dobry, poproszę wodę i kawę.", ru: "Добрый день, пожалуйста, воду и кофе." },
+                    { pl: "Przepraszam, nie rozumiem, proszę mówić wolniej.", ru: "Извините, не понимаю, говорите, пожалуйста, медленнее." },
+                    { pl: "Ile to kosztuje? Czy mogę zapłacić kartą?", ru: "Сколько это стоит? Могу ли я заплатить картой?" },
+                    { pl: "Dzisiaj pracuję rano, a jutro mam wolne.", ru: "Сегодня я работаю утром, а завтра у меня выходной." },
+                    { pl: "Gdzie jest najbliższy sklep spożywczy?", ru: "Где находится ближайший продуктовый магазин?" },
+                    { pl: "Mam na imię Stanisław i mieszkam w Polsce.", ru: "Меня зовут Станислав, и я живу в Польше." },
+                    { pl: "Czy masz teraz trochę wolnego czasu?", ru: "У тебя есть сейчас немного свободного времени?" },
+                    { pl: "Chcę kupić świeży chleb, mleko i kurczaka.", ru: "Я хочу купить свежий хлеб, молоко и курицу." },
+                    { pl: "Bardzo dziękuję za szybką pomoc!", ru: "Большое спасибо за быструю помощь!" },
+                    { pl: "Wczoraj byłem w domu, bo byłem zmęczony.", ru: "Вчера я был дома, потому что устал." }
+                ]
+            },
+            A2: {
+                desc: "Уровень A2: Элементарный (Город, спорт, общение)",
+                words: [
+                    { pl: "Siłownia", tr: "Щиловня", ru: "Тренажёрный зал" },
+                    { pl: "Trening", tr: "Трэнинг", ru: "Тренировка" },
+                    { pl: "Basen", tr: "Басэн", ru: "Бассейн" },
+                    { pl: "Pływać", tr: "Плывачь", ru: "Плавать" },
+                    { pl: "Ratownik", tr: "Ратовник", ru: "Спасатель" },
+                    { pl: "Instruktor", tr: "Инструктор", ru: "Инструктор" },
+                    { pl: "Dziecko", tr: "Дзецко", ru: "Ребёнок" },
+                    { pl: "Rodzice", tr: "Родзицэ", ru: "Родители" },
+                    { pl: "Lekcja", tr: "Лекця", ru: "Урок / Занятие" },
+                    { pl: "Bezpieczeństwo", tr: "Бэзпеченьство", ru: "Безопасность" },
+                    { pl: "Zdrowie", tr: "Здрове", ru: "Здоровье" },
+                    { pl: "Ból", tr: "Буль", ru: "Боль" },
+                    { pl: "Mięśnie", tr: "Менщне", ru: "Мышцы" },
+                    { pl: "Plecy", tr: "Плецы", ru: "Спина" },
+                    { pl: "Ręka", tr: "Рэнка", ru: "Рука" },
+                    { pl: "Noga", tr: "Нога", ru: "Нога" },
+                    { pl: "Głowa", tr: "Глова", ru: "Голова" },
+                    { pl: "Dworzec", tr: "Двожэц", ru: "Вокзал" },
+                    { pl: "Pociąg", tr: "Почёнг", ru: "Поезд" },
+                    { pl: "Bilet", tr: "Билет", ru: "Билет" },
+                    { pl: "Przystanek", tr: "Пшыстанэк", ru: "Остановка" },
+                    { pl: "Ulica", tr: "Улица", ru: "Улица" },
+                    { pl: "Miasto", tr: "Място", ru: "Город" },
+                    { pl: "Rachunek", tr: "Рахунэк", ru: "Счёт / Чек" },
+                    { pl: "Wypłata", tr: "Выплата", ru: "Зарплата" },
+                    { pl: "Zmiana", tr: "Змяна", ru: "Смена (рабочая)" },
+                    { pl: "Godzina", tr: "Годзина", ru: "Час" },
+                    { pl: "Tydzień", tr: "Тыдзень", ru: "Неделя" },
+                    { pl: "Miesiąc", tr: "Мещёнц", ru: "Месяц" },
+                    { pl: "Umowa", tr: "Умова", ru: "Договор" }
+                ],
+                phrases: [
+                    { pl: "Po pracy idę na siłownię zrobić trening pleców.", ru: "После работы я иду в зал сделать тренировку спины." },
+                    { pl: "Pracuję jako ratownik i instruktor pływania.", ru: "Я работаю спасателем и инструктором по плаванию." },
+                    { pl: "Proszę uważać na basenie, woda jest głęboka.", ru: "Пожалуйста, будьте осторожны в бассейне, вода глубокая." },
+                    { pl: "O której godzinie odjeżdża pociąg do Krakowa?", ru: "В котором часу отправляется поезд в Краков?" },
+                    { pl: "W tym miesiącu mam dużo zmian i dobrą wypłatę.", ru: "В этом месяце у меня много смен и хорошая зарплата." },
+                    { pl: "Dzieci bardzo lubią uczyć się pływać.", ru: "Дети очень любят учиться плавать." }
+                ]
+            },
+            B1: {
+                desc: "Уровень B1: Средний (Уверенное общение и работа)",
+                words: [
+                    { pl: "Doświadczenie", tr: "Дощвядчэне", ru: "Опыт" },
+                    { pl: "Obowiązek", tr: "Обозёнзэк", ru: "Обязанность" },
+                    { pl: "Wynagrodzenie", tr: "Вынагродзэне", ru: "Вознаграждение / Оплата" },
+                    { pl: "Oszczędzać", tr: "Ошчэндзачь", ru: "Экономить / Копить" },
+                    { pl: "Wydatek", tr: "Выдатэк", ru: "Расход / Трата" },
+                    { pl: "Cel", tr: "Цэль", ru: "Цель" },
+                    { pl: "Postęp", tr: "Постэмп", ru: "Прогресс" },
+                    { pl: "Wytrzymałość", tr: "Вытшымалощчь", ru: "Выносливость" },
+                    { pl: "Regeneracja", tr: "Рэгэнэраця", ru: "Восстановление" },
+                    { pl: "Kontuzja", tr: "Контузя", ru: "Травма" },
+                    { pl: "Odżywianie", tr: "Оджывяне", ru: "Питание" },
+                    { pl: "Białko", tr: "Бялко", ru: "Белок" },
+                    { pl: "Cierpliwość", tr: "Черпливощчь", ru: "Терпение" },
+                    { pl: "Zaufanie", tr: "Зауфане", ru: "Доверие" },
+                    { pl: "Rozwiązanie", tr: "Розвёнзане", ru: "Решение" },
+                    { pl: "Warunki", tr: "Варунки", ru: "Условия" },
+                    { pl: "Umiejętność", tr: "Умеентнощчь", ru: "Навык / Умение" },
+                    { pl: "Decyzja", tr: "Дэцызя", ru: "Решение (выбор)" },
+                    { pl: "Współpraca", tr: "Вспулпраца", ru: "Сотрудничество" },
+                    { pl: "Rozwój", tr: "Розвуй", ru: "Развитие" }
+                ],
+                phrases: [
+                    { pl: "Regularny trening i dobre odżywianie dają szybki postęp.", ru: "Регулярные тренировки и хорошее питание дают быстрый прогресс." },
+                    { pl: "Staram się oszczędzać pieniądze na ważne cele.", ru: "Я стараюсь копить деньги на важные цели." },
+                    { pl: "W pracy z dziećmi najważniejsze są cierpliwość i zaufanie.", ru: "В работе с детьми важнее всего терпение и доверие." },
+                    { pl: "Muszę zadbać o regenerację po ciężkim tygodniu.", ru: "Мне нужно позаботиться о восстановлении после тяжёлой недели." }
+                ]
+            },
+            B2: {
+                desc: "Уровень B2: Продвинутый (Свободная речь и аргументация)",
+                words: [
+                    { pl: "Konsekwencja", tr: "Консэквэнця", ru: "Последовательность / Последствие" },
+                    { pl: "Zaangażowanie", tr: "Заангажоване", ru: "Вовлечённость" },
+                    { pl: "Wydajność", tr: "Выдайнощчь", ru: "Производительность" },
+                    { pl: "Przedsiębiorczość", tr: "Пшэдщембёрчощчь", ru: "Предприимчивость" },
+                    { pl: "Niezależność", tr: "Незалежнощчь", ru: "Независимость" },
+                    { pl: "Odpowiedzialność", tr: "Одповедзяльнощчь", ru: "Ответственность" },
+                    { pl: "Wyzwanie", tr: "Вызване", ru: "Вызов (задача)" },
+                    { pl: "Osiągnięcie", tr: "Ощёнгнече", ru: "Достижение" },
+                    { pl: "Równowaga", tr: "Рувновага", ru: "Баланс / Равновесие" },
+                    { pl: "Inwestycja", tr: "Инвэстыця", ru: "Инвестиция" },
+                    { pl: "Perspektywa", tr: "Пэрспэктыва", ru: "Перспектива" },
+                    { pl: "Elastyczność", tr: "Элястычнощчь", ru: "Гибкость" }
+                ],
+                phrases: [
+                    { pl: "Konsekwencja w działaniu jest kluczem do każdego osiągnięcia.", ru: "Последовательность в действиях — ключ к любому достижению." },
+                    { pl: "Szukam równowagi między pracą, treningiem a nauką języka.", ru: "Я ищу баланс между работой, тренировками и изучением языка." },
+                    { pl: "Niezależność finansowa wymaga planowania wydatków.", ru: "Финансовая независимость требует планирования расходов." }
+                ]
+            },
+            C1: {
+                desc: "Уровень C1: Профессиональный (Нюансы и идиомы)",
+                words: [
+                    { pl: "Przedsięwzięcie", tr: "Пшэдщемвженче", ru: "Начинание / Проект" },
+                    { pl: "Determinacja", tr: "Дэтэрминаця", ru: "Решимость" },
+                    { pl: "Wszechstronny", tr: "Вшэхстронны", ru: "Разносторонний" },
+                    { pl: "Niewątpliwie", tr: "Невонтпливе", ru: "Несомненно" },
+                    { pl: "Zjawisko", tr: "Зявиско", ru: "Явление" },
+                    { pl: "Kluczowy", tr: "Ключовы", ru: "Ключевой" },
+                    { pl: "Uwarunkowanie", tr: "Уварунковане", ru: "Обусловленность" },
+                    { pl: "Biegłość", tr: "Беглощчь", ru: "Беглость / Свободное владение" }
+                ],
+                phrases: [
+                    { pl: "Niewątpliwie determinacja pozwala pokonać największe przeszkody.", ru: "Несомненно, решимость позволяет преодолеть величайшие препятствия." },
+                    { pl: "Osiągnięcie biegłości językowej wymaga codziennej praktyki.", ru: "Достижение беглости в языке требует ежедневной практики." }
+                ]
+            }
+        };
+
+        // ==================== GYM EXERCISES DATABASE (3 OF 5 SYSTEM) ====================
+        const MUSCLES_DB = {
+            back: {
+                name: "Спина (Широчайшие)",
+                exercises: [
+                    { id: "b1", name: "Подтягивания широким хватом", core: true, tip: "Тяни грудь к перекладине, своди лопатки." },
+                    { id: "b2", name: "Тяга верхнего блока к груди", core: true, tip: "Без раскачки корпуса, пауза в нижней точке." },
+                    { id: "b3", name: "Тяга гантели в наклоне одной рукой", core: true, tip: "Тяни гантель к поясу, растягивай широчайшую." },
+                    { id: "b4", name: "Горизонтальная тяга блока сидя", core: false, tip: "Держи спину ровно, локти вдоль корпуса." },
+                    { id: "b5", name: "Пуловер в кроссовере прямыми руками", core: false, tip: "Изоляция широчайших без включения бицепса." }
+                ]
+            },
+            traps: {
+                name: "Трапеции",
+                exercises: [
+                    { id: "tr1", name: "Шраги с гантелями стоя", core: true, tip: "Поднимай плечи строго вверх, пауза 1 сек." },
+                    { id: "tr2", name: "Тяга штанги к подбородку широким хватом", core: true, tip: "Локти выше кистей, контролируй опускание." },
+                    { id: "tr3", name: "Шраги в тренажёре Смита", core: true, tip: "Максимальная амплитуда без вращения плечами." },
+                    { id: "tr4", name: "Фермерская прогулка с тяжёлыми гантелями", core: false, tip: "Удерживай осанку и напряжение в верхе спины." },
+                    { id: "tr5", name: "Разведения в наклоне на заднюю дельту и трапецию", core: false, tip: "Своди лопатки в верхней точке." }
+                ]
+            },
+            chest: {
+                name: "Грудь",
+                exercises: [
+                    { id: "c1", name: "Жим гантелей на наклонной скамье (30°)", core: true, tip: "Опускай глубоко, жми по дуге вверх." },
+                    { id: "c2", name: "Жим штанги лёжа", core: true, tip: "Лопатки сведены, упор ногами в пол." },
+                    { id: "c3", name: "Отжимания на брусьях с наклоном вперёд", core: true, tip: "Акцент на нижнюю и внешнюю часть грудных." },
+                    { id: "c4", name: "Сведение рук в кроссовере", core: false, tip: "Пиковое сокращение в центре груди." },
+                    { id: "c5", name: "Жим в тренажёре Hammer сидя", core: false, tip: "Безопасная работа до близкого отказа." }
+                ]
+            },
+            shoulders: {
+                name: "Плечи (Дельты)",
+                exercises: [
+                    { id: "s1", name: "Махи гантелями в стороны стоя", core: true, tip: "Поднимай через стороны, мизинец чуть выше." },
+                    { id: "s2", name: "Жим гантелей сидя", core: true, tip: "Не соударяй гантели наверху, держи напряжение." },
+                    { id: "s3", name: "Отведения на заднюю дельту в тренажёре (Обратная бабочка)", core: true, tip: "Тяни локтями назад, не сводя сильно лопатки." },
+                    { id: "s4", name: "Протяжка в кроссовере к лицу (Face Pull)", core: false, tip: "Отлично для осанки и здоровья плечевых суставов." },
+                    { id: "s5", name: "Махи в сторону в кроссовере одной рукой", core: false, tip: "Постоянное натяжение по всей амплитуде." }
+                ]
+            },
+            biceps: {
+                name: "Бицепс",
+                exercises: [
+                    { id: "bi1", name: "Подъём EZ-штанги на бицепс стоя", core: true, tip: "Локти зафиксированы по бокам, без читинга." },
+                    { id: "bi2", name: "Молотки с гантелями (Хаммер)", core: true, tip: "Прорабатывает брахиалис и предплечья." },
+                    { id: "bi3", name: "Подъём гантелей сидя на наклонной скамье", core: true, tip: "Максимальное растяжение длинной головки бицепса." },
+                    { id: "bi4", name: "Сгибания рук на скамье Скотта", core: false, tip: "Изолированный пик бицепса." },
+                    { id: "bi5", name: "Сгибания в нижнем блоке с канатом", core: false, tip: "Разводи кисти в верхней точке." }
+                ]
+            },
+            triceps: {
+                name: "Трицепс",
+                exercises: [
+                    { id: "t1", name: "Разгибания рук на верхнем блоке с канатом", core: true, tip: "Разводи концы каната внизу, локти прижаты." },
+                    { id: "t2", name: "Французский жим с EZ-штангой лёжа", core: true, tip: "Опускай за голову для растяжения длинной головки." },
+                    { id: "t3", name: "Жим узким хватом", core: true, tip: "Базовое движение для массы трицепса." },
+                    { id: "t4", name: "Разгибание одной руки с гантелью из-за головы", core: false, tip: "Полная амплитуда без рывков." },
+                    { id: "t5", name: "Отжимания в гравитроне / от скамьи", core: false, tip: "Добивка трицепса в конце тренировки." }
+                ]
+            },
+            forearms: {
+                name: "Предплечья",
+                exercises: [
+                    { id: "f1", name: "Сгибания запястий со штангой сидя", core: true, tip: "Предплечья на бёдрах, работай только кистями." },
+                    { id: "f2", name: "Подъём штанги на бицепс обратным хватом", core: true, tip: "Нагружает плечелучевую мышцу." },
+                    { id: "f3", name: "Вис на турнике на время", core: true, tip: "Укрепляет хват и связки кистей." },
+                    { id: "f4", name: "Разгибания запястий с гантелями", core: false, tip: "Для баланса разгибателей предплечья." },
+                    { id: "f5", name: "Удержание блинов щипковым хватом", core: false, tip: "Развитие силы пальцев." }
+                ]
+            },
+            abs: {
+                name: "Пресс",
+                exercises: [
+                    { id: "a1", name: "Скручивания на верхнем блоке (Молитва)", core: true, tip: "Скручивай позвоночник, не тяни руками." },
+                    { id: "a2", name: "Подъём ног в висе на турнике", core: true, tip: "Подкручивай таз вверх в верхней точке." },
+                    { id: "a3", name: "Планка с напряжением пресса и ягодиц", core: true, tip: "Держи поясницу нейтральной, 45-60 сек." },
+                    { id: "a4", name: "Обратные скручивания на скамье", core: false, tip: "Контролируемое опускание ног." },
+                    { id: "a5", name: "Велосипед с паузой", core: false, tip: "Проработка косых мышц живота." }
+                ]
+            },
+            quads: {
+                name: "Квадрицепс",
+                exercises: [
+                    { id: "q1", name: "Жим ногами в тренажёре", core: true, tip: "Не отрывай поясницу, не выключай колени наверху." },
+                    { id: "q2", name: "Болгарские выпады с гантелями", core: true, tip: "Бережёт спину и отлично грузит ноги." },
+                    { id: "q3", name: "Разгибания ног сидя в тренажёре", core: true, tip: "Пауза в верхней точке, плавное опускание." },
+                    { id: "q4", name: "Гакк-приседания в тренажёре", core: false, tip: "Глубокая амплитуда с фиксированной спиной." },
+                    { id: "q5", name: "Приседания со штангой на плечах", core: false, tip: "Классическая база при здоровых суставах." }
+                ]
+            },
+            hamstrings: {
+                name: "Бицепс бедра",
+                exercises: [
+                    { id: "h1", name: "Сгибания ног лёжа в тренажёре", core: true, tip: "Прижимай таз к скамье, не подбрасывай вес." },
+                    { id: "h2", name: "Румынская тяга с гантелями", core: true, tip: "Отводи таз назад, чувствуй растяжение задней поверхности." },
+                    { id: "h3", name: "Сгибания ног сидя в тренажёре", core: true, tip: "Максимальное растяжение в исходной позиции." },
+                    { id: "h4", name: "Гиперэкстензия с акцентом на бицепс бедра", core: false, tip: "Скругли верх спины, тянись ягодицами." },
+                    { id: "h5", name: "Ягодичный мост со штангой", core: false, tip: "Мощное разгибание бедра." }
+                ]
+            },
+            glutes: {
+                name: "Ягодицы",
+                exercises: [
+                    { id: "g1", name: "Ягодичный мост в тренажёре или со штангой", core: true, tip: "Пауза наверху 1-2 сек, подбородок к груди." },
+                    { id: "g2", name: "Отведение ноги назад в кроссовере", core: true, tip: "Без прогиба в пояснице." },
+                    { id: "g3", name: "Разведение ног в тренажёре сидя", core: true, tip: "Наклони корпус чуть вперёд." },
+                    { id: "g4", name: "Выпады назад с гантелями", core: false, tip: "Упор в пятку передней ноги." },
+                    { id: "g5", name: "Зашагивания на высокую платформу", core: false, tip: "Не отталкивайся задней ногой." }
+                ]
+            },
+            calves: {
+                name: "Икры",
+                exercises: [
+                    { id: "ca1", name: "Подъёмы на носки стоя в тренажёре", core: true, tip: "Пауза внизу для растяжения ахилла." },
+                    { id: "ca2", name: "Подъёмы на носки сидя", core: true, tip: "Проработка камбаловидной мышцы." },
+                    { id: "ca3", name: "Жим носками в тренажёре для жима ногами", core: true, tip: "Полная амплитуда без пружины." },
+                    { id: "ca4", name: "Подъёмы на носок одной ноги с гантелью", core: false, tip: "Устранение асимметрии." },
+                    { id: "ca5", name: "Прыжки на скакалке (лёгкие)", core: false, tip: "Выносливость голени." }
+                ]
+            }
+        };
+
+        // ==================== APPLICATION STATE ====================
+        const DEFAULT_STATE = {
+            theme: "purple",
+            polish: {
+                level: "A1",
+                learned: [],
+                srs: [],
+                dailyWordIndices: [],
+                dailyPhraseIndices: [],
+                quizStreak: 0
+            },
+            gym: {
+                selectedMuscles: ["back", "biceps"],
+                chosenExercises: {
+                    back: ["b1", "b2", "b3"],
+                    biceps: ["bi1", "bi2", "bi3"]
+                },
+                logs: {},
+                lastHistory: {}
+            },
+            work: {
+                streams: [
+                    { id: 1, name: "Бассейн (Спасатель)", rate: 30.5 },
+                    { id: 2, name: "Инструктор плавания", rate: 45.0 },
+                    { id: 3, name: "Доп. смены / Проект", rate: 35.0 }
+                ],
+                events: {} // { "2026-11-20": [ { id, type: 'shift', shiftType: 'morning', streamId: 1, hours: 6.5, label: '...' } ] }
+            },
+            finance: {
+                expenses: [],
+                goals: [
+                    { id: 1, title: "Резервный фонд", target: 3000, saved: 850 }
+                ]
+            }
+        };
+
+        let state = JSON.parse(localStorage.getItem("pervyy_shag_v3")) || DEFAULT_STATE;
+        let currentCalDate = new Date(2026, 10, 1); // November 2026
+        let selectedModalDate = null;
+        let currentQuizItem = null;
+
+        function saveState() {
+            localStorage.setItem("pervyy_shag_v3", JSON.stringify(state));
+        }
+
+        // ==================== THEME & NAVIGATION ====================
+        function changeTheme(theme) {
+            state.theme = theme;
+            if (theme === "purple") {
+                document.documentElement.removeAttribute("data-theme");
+            } else {
+                document.documentElement.setAttribute("data-theme", theme);
+            }
+            document.getElementById("themeSelector").value = theme;
+            saveState();
+        }
+
+        function switchTab(tabName) {
+            ["polish", "gym", "work", "finance"].forEach(t => {
+                document.getElementById(`tab-${t}`).classList.toggle("hidden", t !== tabName);
+                const navBtn = document.getElementById(`nav-${t}`);
+                if (t === tabName) {
+                    navBtn.classList.add("text-accent", "bg-accent-soft");
+                    navBtn.classList.remove("text-zinc-400");
+                } else {
+                    navBtn.classList.remove("text-accent", "bg-accent-soft");
+                    navBtn.classList.add("text-zinc-400");
+                }
+            });
+            if (tabName === "polish") renderPolishModule();
+            if (tabName === "gym") renderGymModule();
+            if (tabName === "work") renderWorkModule();
+            if (tabName === "finance") renderFinanceModule();
+        }
+
+        function closeModal(id) {
+            document.getElementById(id).classList.add("hidden");
+        }
+
+        // ==================== POLISH MODULE ====================
+        function speakText(text) {
+            if (!("speechSynthesis" in window)) return;
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(text);
+            u.lang = "pl-PL";
+            u.rate = 0.92;
+            window.speechSynthesis.speak(u);
+        }
+
+        function setPlLevel(lvl) {
+            state.polish.level = lvl;
+            refreshDailyPack(false);
+            saveState();
+            renderPolishModule();
+        }
+
+        function setPlSubtab(sub) {
+            ["daily", "words", "phrases", "quiz"].forEach(s => {
+                document.getElementById(`pl-view-${s}`).classList.toggle("hidden", s !== sub);
+                const btn = document.getElementById(`pl-sub-${s}`);
+                if (s === sub) {
+                    btn.classList.add("btn-accent");
+                    btn.classList.remove("text-zinc-400");
+                } else {
+                    btn.classList.remove("btn-accent");
+                    btn.classList.add("text-zinc-400");
+                }
+            });
+            if (sub === "words") renderPlDictionary();
+            if (sub === "phrases") renderPlPhrases();
+            if (sub === "quiz") nextQuizQuestion();
+        }
+
+        function refreshDailyPack(shouldSave = true) {
+            const lvlData = POLISH_DATA[state.polish.level];
+            const unlearnedIdx = lvlData.words
+                .map((w, i) => ({ w, i }))
+                .filter(x => !state.polish.learned.includes(`${state.polish.level}:${x.w.pl}`))
+                .map(x => x.i);
+            const pool = unlearnedIdx.length >= 10 ? unlearnedIdx : lvlData.words.map((_, i) => i);
+            state.polish.dailyWordIndices = pool.sort(() => 0.5 - Math.random()).slice(0, 10);
+            state.polish.dailyPhraseIndices = lvlData.phrases.map((_, i) => i).sort(() => 0.5 - Math.random()).slice(0, 5);
+            if (shouldSave) {
+                saveState();
+                renderPolishModule();
+            }
+        }
+
+        function toggleWordLearned(plWord) {
+            const key = `${state.polish.level}:${plWord}`;
+            const idx = state.polish.learned.indexOf(key);
+            if (idx > -1) {
+                state.polish.learned.splice(idx, 1);
+            } else {
+                state.polish.learned.push(key);
+                state.polish.srs = state.polish.srs.filter(k => k !== key);
+            }
+            saveState();
+            renderPolishModule();
+            renderPlDictionary();
+        }
+
+        function toggleWordSrs(plWord) {
+            const key = `${state.polish.level}:${plWord}`;
+            const idx = state.polish.srs.indexOf(key);
+            if (idx > -1) {
+                state.polish.srs.splice(idx, 1);
+            } else {
+                state.polish.srs.push(key);
+            }
+            saveState();
+            renderPolishModule();
+        }
+
+        function renderWordCard(w) {
+            const key = `${state.polish.level}:${w.pl}`;
+            const isLearned = state.polish.learned.includes(key);
+            const isSrs = state.polish.srs.includes(key);
+            return `
+                <div class="card p-3 flex items-center justify-between gap-2 ${isLearned ? 'border-emerald-500/40 bg-emerald-500/5' : ''}">
+                    <div class="min-w-0 flex-1">
+                        <div class="flex items-center gap-2">
+                            <span class="font-bold text-sm text-white">${w.pl}</span>
+                            <span class="text-[11px] text-zinc-400">[${w.tr}]</span>
+                        </div>
+                        <div class="text-xs text-zinc-300 mt-0.5">${w.ru}</div>
+                    </div>
+                    <div class="flex items-center gap-1.5">
+                        <button onclick="speakText('${w.pl.replace(/'/g, "\'")}')" class="w-8 h-8 rounded-lg elevated flex items-center justify-center text-sm" title="Озвучить">🔊</button>
+                        <button onclick="toggleWordSrs('${w.pl.replace(/'/g, "\'")}')" class="px-2 h-8 rounded-lg text-[11px] font-bold ${isSrs ? 'bg-amber-500 text-black' : 'elevated text-zinc-400'}" title="В повторение">SRS</button>
+                        <button onclick="toggleWordLearned('${w.pl.replace(/'/g, "\'")}')" class="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold ${isLearned ? 'bg-emerald-500 text-black' : 'elevated text-zinc-400'}">✓</button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderPolishModule() {
+            const lvl = state.polish.level;
+            const lvlData = POLISH_DATA[lvl];
+            document.querySelectorAll(".pl-lvl-btn").forEach(btn => {
+                if (btn.dataset.lvl === lvl) {
+                    btn.classList.add("btn-accent", "border-transparent");
+                } else {
+                    btn.classList.remove("btn-accent", "border-transparent");
+                }
+            });
+
+            document.getElementById("plTotalLearned").textContent = `${state.polish.learned.length} слов`;
+            document.getElementById("plLevelDesc").textContent = lvlData.desc;
+
+            const learnedInLevel = lvlData.words.filter(w => state.polish.learned.includes(`${lvl}:${w.pl}`)).length;
+            const pct = Math.round((learnedInLevel / lvlData.words.length) * 100);
+            document.getElementById("plLevelProgressText").textContent = `${learnedInLevel}/${lvlData.words.length} (${pct}%)`;
+            document.getElementById("plLevelProgressBar").style.width = `${pct}%`;
+
+            // SRS Alert
+            const srsAlert = document.getElementById("plSrsAlert");
+            if (state.polish.srs.length > 0) {
+                srsAlert.classList.remove("hidden");
+                document.getElementById("plSrsCount").textContent = `${state.polish.srs.length} слов в списке повторения`;
+            } else {
+                srsAlert.classList.add("hidden");
+            }
+
+            if (!state.polish.dailyWordIndices || state.polish.dailyWordIndices.length === 0) {
+                refreshDailyPack(false);
+            }
+
+            const dailyWordsHtml = state.polish.dailyWordIndices
+                .map(i => lvlData.words[i])
+                .filter(Boolean)
+                .map(renderWordCard)
+                .join("");
+            document.getElementById("plDailyWordsList").innerHTML = dailyWordsHtml;
+
+            const dailyPhrasesHtml = state.polish.dailyPhraseIndices
+                .map(i => lvlData.phrases[i])
+                .filter(Boolean)
+                .map(p => `
+                    <div class="card p-3 space-y-1">
+                        <div class="flex justify-between items-start gap-2">
+                            <div class="font-semibold text-xs text-white leading-relaxed">${p.pl}</div>
+                            <button onclick="speakText('${p.pl.replace(/'/g, "\'")}')" class="px-2 py-1 rounded-lg elevated text-xs flex-shrink-0">🔊</button>
+                        </div>
+                        <div class="text-xs text-zinc-400">${p.ru}</div>
+                    </div>
+                `).join("");
+            document.getElementById("plDailyPhrasesList").innerHTML = dailyPhrasesHtml;
+        }
+
+        function renderPlDictionary() {
+            const q = (document.getElementById("plWordSearch")?.value || "").toLowerCase();
+            const filter = document.getElementById("plWordFilter")?.value || "all";
+            const lvl = state.polish.level;
+            const words = POLISH_DATA[lvl].words.filter(w => {
+                const matchText = w.pl.toLowerCase().includes(q) || w.ru.toLowerCase().includes(q);
+                const key = `${lvl}:${w.pl}`;
+                if (filter === "learned") return matchText && state.polish.learned.includes(key);
+                if (filter === "unlearned") return matchText && !state.polish.learned.includes(key);
+                if (filter === "srs") return matchText && state.polish.srs.includes(key);
+                return matchText;
+            });
+            document.getElementById("plDictionaryList").innerHTML = words.map(renderWordCard).join("") || `<div class="text-xs text-zinc-500 text-center py-4">Ничего не найдено</div>`;
+        }
+
+        function renderPlPhrases() {
+            const q = (document.getElementById("plPhraseSearch")?.value || "").toLowerCase();
+            const phrases = POLISH_DATA[state.polish.level].phrases.filter(p => p.pl.toLowerCase().includes(q) || p.ru.toLowerCase().includes(q));
+            document.getElementById("plPhrasesList").innerHTML = phrases.map(p => `
+                <div class="card p-3 space-y-1">
+                    <div class="flex justify-between items-start gap-2">
+                        <div class="font-semibold text-xs text-white">${p.pl}</div>
+                        <button onclick="speakText('${p.pl.replace(/'/g, "\'")}')" class="px-2 py-1 rounded-lg elevated text-xs">🔊</button>
+                    </div>
+                    <div class="text-xs text-zinc-400">${p.ru}</div>
+                </div>
+            `).join("");
+        }
+
+        function nextQuizQuestion() {
+            const lvl = state.polish.level;
+            const allWords = POLISH_DATA[lvl].words;
+            // Prioritize SRS words if available
+            let targetWord = null;
+            const srsInLevel = state.polish.srs.filter(k => k.startsWith(`${lvl}:`));
+            if (srsInLevel.length > 0 && Math.random() < 0.7) {
+                const pickPl = srsInLevel[Math.floor(Math.random() * srsInLevel.length)].split(":")[1];
+                targetWord = allWords.find(w => w.pl === pickPl);
+                document.getElementById("quizModeLabel").textContent = "Режим: Повторение сложных (SRS)";
+            } else {
+                targetWord = allWords[Math.floor(Math.random() * allWords.length)];
+                document.getElementById("quizModeLabel").textContent = `Режим: Тренажёр уровня ${lvl}`;
+            }
+            currentQuizItem = targetWord;
+            document.getElementById("quizQuestionWord").textContent = targetWord.pl;
+            document.getElementById("quizStreak").textContent = state.polish.quizStreak;
+            document.getElementById("quizFeedback").textContent = "";
+
+            const distractors = allWords.filter(w => w.pl !== targetWord.pl).sort(() => 0.5 - Math.random()).slice(0, 3);
+            const options = [targetWord, ...distractors].sort(() => 0.5 - Math.random());
+
+            document.getElementById("quizOptions").innerHTML = options.map(opt => `
+                <button onclick="checkQuizAnswer('${opt.pl.replace(/'/g, "\'")}')" class="w-full p-3 rounded-xl elevated hover:border-accent text-xs font-semibold text-zinc-200 transition">
+                    ${opt.ru}
+                </button>
+            `).join("");
+        }
+
+        function checkQuizAnswer(selectedPl) {
+            const fb = document.getElementById("quizFeedback");
+            const key = `${state.polish.level}:${currentQuizItem.pl}`;
+            if (selectedPl === currentQuizItem.pl) {
+                state.polish.quizStreak += 1;
+                if (!state.polish.learned.includes(key)) state.polish.learned.push(key);
+                state.polish.srs = state.polish.srs.filter(k => k !== key);
+                fb.innerHTML = `<span class="text-emerald-400">✓ Верно! Слово отмечено как выученное.</span>`;
+                speakText(currentQuizItem.pl);
+            } else {
+                state.polish.quizStreak = 0;
+                if (!state.polish.srs.includes(key)) state.polish.srs.push(key);
+                fb.innerHTML = `<span class="text-rose-400">✕ Ошибка. Правильно: ${currentQuizItem.ru}. Добавлено в SRS.</span>`;
+            }
+            saveState();
+            setTimeout(nextQuizQuestion, 1100);
+        }
+
+        // ==================== GYM MODULE (FRONT/BACK + 3 OF 5 + AUTO LAST HISTORY) ====================
+        function setBodyView(view) {
+            document.getElementById("svgBodyFront").classList.toggle("hidden", view !== "front");
+            document.getElementById("svgBodyBack").classList.toggle("hidden", view !== "back");
+            document.getElementById("btnBodyFront").className = view === "front" ? "py-2 rounded-xl text-xs font-bold btn-accent" : "py-2 rounded-xl text-xs font-bold elevated text-zinc-400";
+            document.getElementById("btnBodyBack").className = view === "back" ? "py-2 rounded-xl text-xs font-bold btn-accent" : "py-2 rounded-xl text-xs font-bold elevated text-zinc-400";
+        }
+
+        function toggleMuscle(mKey) {
+            const idx = state.gym.selectedMuscles.indexOf(mKey);
+            if (idx > -1) {
+                state.gym.selectedMuscles.splice(idx, 1);
+            } else {
+                state.gym.selectedMuscles.push(mKey);
+                if (!state.gym.chosenExercises[mKey]) {
+                    state.gym.chosenExercises[mKey] = MUSCLES_DB[mKey].exercises.slice(0, 3).map(e => e.id);
+                }
+            }
+            saveState();
+            renderGymModule();
+        }
+
+        function toggleChosenExercise(mKey, exId) {
+            const list = state.gym.chosenExercises[mKey] || [];
+            const idx = list.indexOf(exId);
+            if (idx > -1) {
+                list.splice(idx, 1);
+            } else {
+                if (list.length >= 3) {
+                    list.shift(); // Keep max 3 active exercises
+                }
+                list.push(exId);
+            }
+            state.gym.chosenExercises[mKey] = list;
+            saveState();
+            renderGymModule();
+        }
+
+        function addExerciseSet(exId) {
+            if (!state.gym.logs[exId]) state.gym.logs[exId] = [];
+            const last = state.gym.lastHistory[exId] || { weight: 20, reps: 10, rir: 2 };
+            state.gym.logs[exId].push({ weight: last.weight, reps: last.reps, rir: last.rir, done: true });
+            saveState();
+            renderGymModule();
+        }
+
+        function updateSetField(exId, setIdx, field, val) {
+            const num = parseFloat(val) || 0;
+            state.gym.logs[exId][setIdx][field] = num;
+            state.gym.lastHistory[exId] = {
+                weight: state.gym.logs[exId][setIdx].weight,
+                reps: state.gym.logs[exId][setIdx].reps,
+                rir: state.gym.logs[exId][setIdx].rir
+            };
+            saveState();
+            updateGymStats();
+        }
+
+        function removeSet(exId, setIdx) {
+            state.gym.logs[exId].splice(setIdx, 1);
+            saveState();
+            renderGymModule();
+        }
+
+        function updateGymStats() {
+            let totalSetsTarget = 0;
+            let totalSetsDone = 0;
+            let tonnage = 0;
+
+            state.gym.selectedMuscles.forEach(mKey => {
+                const chosen = state.gym.chosenExercises[mKey] || [];
+                totalSetsTarget += chosen.length * 4; // 4 recommended sets per exercise
+                chosen.forEach(exId => {
+                    const sets = state.gym.logs[exId] || [];
+                    totalSetsDone += sets.length;
+                    sets.forEach(s => {
+                        tonnage += (s.weight || 0) * (s.reps || 0);
+                    });
+                });
+            });
+
+            const pct = totalSetsTarget > 0 ? Math.min(100, Math.round((totalSetsDone / totalSetsTarget) * 100)) : 0;
+            document.getElementById("gymCompletionPct").textContent = `${pct}%`;
+            document.getElementById("gymTotalTonnage").textContent = `${Math.round(tonnage)} кг`;
+        }
+
+        function renderGymModule() {
+            // Update SVG paths
+            document.querySelectorAll(".muscle-path").forEach(path => {
+                const m = path.dataset.muscle;
+                path.classList.toggle("active", state.gym.selectedMuscles.includes(m));
+            });
+
+            // Muscle chips
+            document.getElementById("muscleChipsContainer").innerHTML = Object.keys(MUSCLES_DB).map(mKey => {
+                const active = state.gym.selectedMuscles.includes(mKey);
+                return `<button onclick="toggleMuscle('${mKey}')" class="px-2.5 py-1 rounded-lg text-xs font-semibold ${active ? 'btn-accent' : 'elevated text-zinc-400'}">${MUSCLES_DB[mKey].name}</button>`;
+            }).join("");
+
+            // Render exercises per selected muscle
+            const area = document.getElementById("gymExercisesArea");
+            area.innerHTML = state.gym.selectedMuscles.map(mKey => {
+                const mData = MUSCLES_DB[mKey];
+                const chosen = state.gym.chosenExercises[mKey] || [];
+
+                const poolHtml = mData.exercises.map(ex => {
+                    const isPicked = chosen.includes(ex.id);
+                    return `
+                        <button onclick="toggleChosenExercise('${mKey}', '${ex.id}')" class="w-full text-left p-2.5 rounded-xl border text-xs flex items-center justify-between ${isPicked ? 'border-accent bg-accent-soft text-white' : 'border-zinc-800 bg-zinc-900/50 text-zinc-400'}">
+                            <span>${ex.name} <span class="text-[10px] opacity-75">(${ex.core ? 'База' : 'На выбор'})</span></span>
+                            <span class="font-bold">${isPicked ? '✓ В плане' : '+ Выбрать'}</span>
+                        </button>
+                    `;
+                }).join("");
+
+                const activeLogsHtml = chosen.map(exId => {
+                    const ex = mData.exercises.find(e => e.id === exId);
+                    if (!ex) return "";
+                    const sets = state.gym.logs[exId] || [];
+                    const prev = state.gym.lastHistory[exId];
+                    const prevBadge = prev ? `<span class="text-[11px] text-emerald-400">Прошлый раз: ${prev.weight} кг × ${prev.reps} (RIR ${prev.rir})</span>` : `<span class="text-[11px] text-zinc-500">Рекомендуется: 4 подхода × 8–12 повт.</span>`;
+
+                    const setsRows = sets.map((s, idx) => `
+                        <div class="grid grid-cols-12 gap-1.5 items-center text-xs mt-1.5">
+                            <span class="col-span-2 text-zinc-400 font-bold">#${idx + 1}</span>
+                            <input type="number" value="${s.weight}" onchange="updateSetField('${exId}', ${idx}, 'weight', this.value)" class="col-span-3 px-2 py-1.5 rounded-lg elevated text-center outline-none" placeholder="кг">
+                            <input type="number" value="${s.reps}" onchange="updateSetField('${exId}', ${idx}, 'reps', this.value)" class="col-span-3 px-2 py-1.5 rounded-lg elevated text-center outline-none" placeholder="повт">
+                            <input type="number" value="${s.rir}" onchange="updateSetField('${exId}', ${idx}, 'rir', this.value)" class="col-span-3 px-2 py-1.5 rounded-lg elevated text-center outline-none" placeholder="RIR">
+                            <button onclick="removeSet('${exId}', ${idx})" class="col-span-1 text-rose-400 font-bold">✕</button>
+                        </div>
+                    `).join("");
+
+                    return `
+                        <div class="elevated p-3 rounded-xl space-y-2">
+                            <div class="flex justify-between items-start">
+                                <div>
+                                    <div class="font-bold text-xs text-white">${ex.name}</div>
+                                    <div class="text-[11px] text-zinc-400">${ex.tip}</div>
+                                    ${prevBadge}
+                                </div>
+                                <button onclick="addExerciseSet('${exId}')" class="px-2.5 py-1 rounded-lg btn-accent text-xs font-bold">+ Подход</button>
+                            </div>
+                            ${sets.length > 0 ? `
+                                <div class="grid grid-cols-12 gap-1.5 text-[10px] text-zinc-500 pt-1">
+                                    <span class="col-span-2">Сет</span><span class="col-span-3 text-center">Вес (кг)</span><span class="col-span-3 text-center">Повт.</span><span class="col-span-3 text-center">До отказа</span>
+                                </div>
+                                ${setsRows}
+                            ` : ''}
+                        </div>
+                    `;
+                }).join("");
+
+                return `
+                    <div class="card p-4 space-y-3">
+                        <div class="flex justify-between items-center">
+                            <h3 class="font-bold text-sm text-accent">${mData.name}</h3>
+                            <span class="text-xs text-zinc-400">Выбрано: ${chosen.length} / 3</span>
+                        </div>
+                        <details class="text-xs">
+                            <summary class="cursor-pointer text-zinc-400 hover:text-white font-semibold">Выбрать 3 упражнения из 5 предложенных ▾</summary>
+                            <div class="space-y-1.5 mt-2">${poolHtml}</div>
+                        </details>
+                        <div class="space-y-2">${activeLogsHtml}</div>
+                    </div>
+                `;
+            }).join("");
+
+            updateGymStats();
+        }
+
+        function saveWorkoutToCalendar() {
+            const todayStr = new Date().toISOString().split("T")[0];
+            const names = state.gym.selectedMuscles.map(k => MUSCLES_DB[k].name.split(" ")[0]).join(" + ");
+            const pct = document.getElementById("gymCompletionPct").textContent;
+            if (!state.work.events[todayStr]) state.work.events[todayStr] = [];
+            state.work.events[todayStr].push({
+                id: Date.now(),
+                type: "workout",
+                label: `Зал: ${names} (${pct})`
+            });
+            // Clear current logs after saving
+            state.gym.logs = {};
+            saveState();
+            renderGymModule();
+            alert(`Тренировка (${names}) записана в календарь на сегодня!`);
+        }
+
+        // ==================== WORK & CALENDAR MODULE ====================
+        function updateStreamField(id, field, val) {
+            const s = state.work.streams.find(x => x.id === id);
+            if (!s) return;
+            s[field] = field === "rate" ? (parseFloat(val) || 0) : val;
+            saveState();
+            renderWorkModule();
+            renderFinanceModule();
+        }
+
+        function getMonthlyWorkStats(year, month) {
+            const prefix = `${year}-${String(month + 1).padStart(2, "0")}`;
+            const stats = {};
+            state.work.streams.forEach(s => stats[s.id] = { hours: 0, earned: 0 });
+            let totalEarned = 0;
+
+            Object.keys(state.work.events).forEach(dateKey => {
+                if (!dateKey.startsWith(prefix)) return;
+                state.work.events[dateKey].forEach(ev => {
+                    if (ev.type === "shift" && stats[ev.streamId]) {
+                        const stream = state.work.streams.find(s => s.id === ev.streamId);
+                        const h = parseFloat(ev.hours) || 0;
+                        const money = h * (stream ? stream.rate : 0);
+                        stats[ev.streamId].hours += h;
+                        stats[ev.streamId].earned += money;
+                        totalEarned += money;
+                    }
+                });
+            });
+            return { byStream: stats, totalEarned };
+        }
+
+        function changeCalMonth(delta) {
+            currentCalDate.setMonth(currentCalDate.getMonth() + delta);
+            renderWorkModule();
+        }
+
+        function renderWorkModule() {
+            const y = currentCalDate.getFullYear();
+            const m = currentCalDate.getMonth();
+            const { byStream, totalEarned } = getMonthlyWorkStats(y, m);
+
+            document.getElementById("workMonthTotalPln").textContent = `${totalEarned.toFixed(0)} zł`;
+
+            // Render 3 hourly streams
+            document.getElementById("incomeStreamsContainer").innerHTML = state.work.streams.map(s => {
+                const st = byStream[s.id] || { hours: 0, earned: 0 };
+                return `
+                    <div class="elevated p-3 rounded-xl space-y-2">
+                        <input type="text" value="${s.name}" onchange="updateStreamField(${s.id}, 'name', this.value)" class="w-full bg-transparent font-bold text-xs text-white border-b border-zinc-700 pb-1 outline-none">
+                        <div class="flex items-center justify-between text-xs">
+                            <span class="text-zinc-400">Ставка (zł/ч):</span>
+                            <input type="number" step="0.5" value="${s.rate}" onchange="updateStreamField(${s.id}, 'rate', this.value)" class="w-16 px-2 py-1 rounded bg-zinc-900 text-right font-bold text-accent outline-none">
+                        </div>
+                        <div class="flex justify-between text-xs pt-1 border-t border-zinc-800">
+                            <span class="text-zinc-400">Часов: <strong class="text-white">${st.hours} ч</strong></span>
+                            <span class="font-bold text-emerald-400">${st.earned.toFixed(0)} zł</span>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+
+            // Calendar Title
+            const monthNames = ["Январь", "Февраль", "Март", "Апрель", "Май", "Июнь", "Июль", "Август", "Сентябрь", "Октябрь", "Ноябрь", "Декабрь"];
+            document.getElementById("calMonthTitle").textContent = `${monthNames[m]} ${y}`;
+
+            // Render Grid
+            const firstDay = new Date(y, m, 1);
+            let startDayOfWeek = firstDay.getDay() - 1;
+            if (startDayOfWeek < 0) startDayOfWeek = 6;
+            const daysInMonth = new Date(y, m + 1, 0).getDate();
+
+            let html = "";
+            for (let i = 0; i < startDayOfWeek; i++) {
+                html += `<div class="h-14 rounded-xl bg-zinc-950/40"></div>`;
+            }
+
+            for (let d = 1; d <= daysInMonth; d++) {
+                const dateKey = `${y}-${String(m + 1).padStart(2, "0")}-${String(d).padStart(2, "0")}`;
+                const dayEvents = state.work.events[dateKey] || [];
+                const dots = dayEvents.map(ev => {
+                    if (ev.type === "workout") return `<span class="w-2 h-2 rounded-full bg-purple-500"></span>`;
+                    if (ev.shiftType === "morning") return `<span class="w-2 h-2 rounded-full bg-emerald-500"></span>`;
+                    if (ev.shiftType === "evening") return `<span class="w-2 h-2 rounded-full bg-rose-500"></span>`;
+                    return `<span class="w-2 h-2 rounded-full bg-indigo-500"></span>`;
+                }).join("");
+
+                const shiftHours = dayEvents.filter(e => e.type === "shift").reduce((acc, e) => acc + (parseFloat(e.hours) || 0), 0);
+
+                html += `
+                    <button onclick="openDayModal('${dateKey}')" class="h-14 rounded-xl elevated hover:border-accent p-1 flex flex-col justify-between items-center transition">
+                        <span class="text-xs font-bold ${dayEvents.length ? 'text-white' : 'text-zinc-400'}">${d}</span>
+                        <div class="flex gap-0.5 flex-wrap justify-center">${dots}</div>
+                        <span class="text-[9px] text-zinc-400">${shiftHours > 0 ? shiftHours + 'ч' : ''}</span>
+                    </button>
+                `;
+            }
+            document.getElementById("calendarGrid").innerHTML = html;
+        }
+
+        function openDayModal(dateKey) {
+            selectedModalDate = dateKey;
+            document.getElementById("dayModalTitle").textContent = `События: ${dateKey}`;
+            document.getElementById("shiftStreamSelect").innerHTML = state.work.streams.map(s => `<option value="${s.id}">${s.name} (${s.rate} zł/ч)</option>`).join("");
+            renderDayModalEvents();
+            document.getElementById("dayModal").classList.remove("hidden");
+        }
+
+        function renderDayModalEvents() {
+            const list = state.work.events[selectedModalDate] || [];
+            document.getElementById("dayEventsList").innerHTML = list.map(ev => `
+                <div class="elevated p-2 rounded-lg flex justify-between items-center text-xs">
+                    <span>${ev.label}</span>
+                    <button onclick="deleteDayEvent(${ev.id})" class="text-rose-400 font-bold px-1.5">✕</button>
+                </div>
+            `).join("") || `<div class="text-xs text-zinc-500">Нет записей на этот день</div>`;
+        }
+
+        function addWorkShift() {
+            const streamId = parseInt(document.getElementById("shiftStreamSelect").value);
+            const shiftType = document.getElementById("shiftTypeSelect").value;
+            const hours = parseFloat(document.getElementById("shiftHoursInput").value) || 0;
+            const stream = state.work.streams.find(s => s.id === streamId);
+            const earned = (hours * (stream ? stream.rate : 0)).toFixed(0);
+            const badge = shiftType === "morning" ? "🟢 Утро" : shiftType === "evening" ? "🔴 Вечер" : "🟣 Доп.";
+
+            if (!state.work.events[selectedModalDate]) state.work.events[selectedModalDate] = [];
+            state.work.events[selectedModalDate].push({
+                id: Date.now(),
+                type: "shift",
+                shiftType,
+                streamId,
+                hours,
+                label: `${badge}: ${stream.name} (${hours} ч = ${earned} zł)`
+            });
+            saveState();
+            renderDayModalEvents();
+            renderWorkModule();
+            renderFinanceModule();
+        }
+
+        function deleteDayEvent(evId) {
+            state.work.events[selectedModalDate] = (state.work.events[selectedModalDate] || []).filter(e => e.id !== evId);
+            saveState();
+            renderDayModalEvents();
+            renderWorkModule();
+            renderFinanceModule();
+        }
+
+        // ==================== FINANCE & SAVINGS MODULE ====================
+        function addExpense() {
+            const title = document.getElementById("expTitle").value.trim();
+            const amount = parseFloat(document.getElementById("expAmount").value) || 0;
+            const category = document.getElementById("expCategory").value;
+            if (!title || amount <= 0) return;
+
+            state.finance.expenses.unshift({
+                id: Date.now(),
+                title,
+                amount,
+                category,
+                date: new Date().toISOString().split("T")[0]
+            });
+            document.getElementById("expTitle").value = "";
+            document.getElementById("expAmount").value = "";
+            saveState();
+            renderFinanceModule();
+        }
+
+        function deleteExpense(id) {
+            state.finance.expenses = state.finance.expenses.filter(e => e.id !== id);
+            saveState();
+            renderFinanceModule();
+        }
+
+        function openGoalModal() {
+            document.getElementById("goalModal").classList.remove("hidden");
+        }
+
+        function addSavingsGoal() {
+            const title = document.getElementById("goalTitleInput").value.trim();
+            const target = parseFloat(document.getElementById("goalTargetInput").value) || 0;
+            const saved = parseFloat(document.getElementById("goalSavedInput").value) || 0;
+            if (!title || target <= 0) return;
+
+            state.finance.goals.push({ id: Date.now(), title, target, saved });
+            document.getElementById("goalTitleInput").value = "";
+            document.getElementById("goalTargetInput").value = "";
+            closeModal("goalModal");
+            saveState();
+            renderFinanceModule();
+        }
+
+        function topUpGoal(id, amount) {
+            const g = state.finance.goals.find(x => x.id === id);
+            if (g) {
+                g.saved += amount;
+                saveState();
+                renderFinanceModule();
+            }
+        }
+
+        function renderFinanceModule() {
+            const y = currentCalDate.getFullYear();
+            const m = currentCalDate.getMonth();
+            const { totalEarned } = getMonthlyWorkStats(y, m);
+            const totalSpent = state.finance.expenses.reduce((acc, e) => acc + e.amount, 0);
+            const balance = totalEarned - totalSpent;
+
+            document.getElementById("finIncomeDisplay").textContent = `${totalEarned.toFixed(0)} zł`;
+            document.getElementById("finExpenseDisplay").textContent = `${totalSpent.toFixed(0)} zł`;
+            document.getElementById("finBalanceDisplay").textContent = `${balance.toFixed(0)} zł`;
+
+            document.getElementById("expensesList").innerHTML = state.finance.expenses.map(e => `
+                <div class="elevated p-2.5 rounded-xl flex justify-between items-center text-xs">
+                    <div>
+                        <div class="font-bold text-white">${e.title}</div>
+                        <div class="text-[10px] text-zinc-400">${e.category} • ${e.date}</div>
+                    </div>
+                    <div class="flex items-center gap-2">
+                        <span class="font-bold text-rose-400">-${e.amount} zł</span>
+                        <button onclick="deleteExpense(${e.id})" class="text-zinc-500 hover:text-rose-400">✕</button>
+                    </div>
+                </div>
+            `).join("") || `<div class="text-xs text-zinc-500 text-center py-2">Расходов пока нет</div>`;
+
+            document.getElementById("savingsGoalsList").innerHTML = state.finance.goals.map(g => {
+                const pct = Math.min(100, Math.round((g.saved / g.target) * 100));
+                return `
+                    <div class="elevated p-3 rounded-xl space-y-2">
+                        <div class="flex justify-between items-center text-xs">
+                            <span class="font-bold text-white">${g.title}</span>
+                            <span class="text-accent font-bold">${g.saved} / ${g.target} zł (${pct}%)</span>
+                        </div>
+                        <div class="w-full h-2 bg-zinc-900 rounded-full overflow-hidden">
+                            <div class="h-full btn-accent" style="width: ${pct}%"></div>
+                        </div>
+                        <div class="flex gap-1.5 pt-1">
+                            <button onclick="topUpGoal(${g.id}, 50)" class="px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-[11px] font-semibold">+50 zł</button>
+                            <button onclick="topUpGoal(${g.id}, 200)" class="px-2.5 py-1 rounded-lg bg-zinc-800 hover:bg-zinc-700 text-[11px] font-semibold">+200 zł</button>
+                        </div>
+                    </div>
+                `;
+            }).join("");
+        }
+
+        // ==================== BACKUP EXPORT / IMPORT ====================
+        function openBackupModal() {
+            document.getElementById("backupModal").classList.remove("hidden");
+        }
+
+        function exportDataJson() {
+            const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement("a");
+            a.href = url;
+            a.download = `pervyy_shag_backup_${new Date().toISOString().split("T")[0]}.json`;
+            a.click();
+            URL.revokeObjectURL(url);
+        }
+
+        function importDataJson(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            const reader = new FileReader();
+            reader.onload = e => {
+                try {
+                    state = JSON.parse(e.target.result);
+                    saveState();
+                    location.reload();
+                } catch (err) {
+                    alert("Ошибка чтения JSON файла");
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        // ==================== INIT ====================
+        window.addEventListener("DOMContentLoaded", () => {
+            changeTheme(state.theme || "purple");
+            switchTab("polish");
+        });
+    </script>
+</body>
+</html>
